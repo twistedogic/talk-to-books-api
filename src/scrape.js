@@ -75,6 +75,10 @@ class Scraper {
     const content = await this.get(url, { waitFor, clicks });
     return getResult(content);
   }
+
+  async exit() {
+    await this.browser.close();
+  }
 }
 
 export const createScraper = async () => {

@@ -54,9 +54,9 @@ createScraper()
   });
 
 process.on("SIGINT", () => {
-  chrome.close().then(() => console.log("exit"));
+  chrome.exit().then(() => console.log("exit"));
 });
 
 process.on("SIGTERM", () => {
-  chrome.close().then(() => console.log("exit"));
+  chrome.exit().then(() => console.log("exit"));
 });
