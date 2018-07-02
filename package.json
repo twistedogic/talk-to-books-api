@@ -1,0 +1,77 @@
+{
+  "name": "talkToBooks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node ./src/index.js",
+    "test": "jest --runInBand --detectOpenHandles",
+    "test:watch": "jest --watchAll",
+    "clean": "prettier --write './src/**/*.js'",
+    "lint": "eslint ./src/**/*.js ",
+    "precommit": "npm run clean && npm run lint && npm test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jest": "^21.17.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.10.0",
+    "husky": "^0.14.3",
+    "jest": "^23.2.0",
+    "prettier": "^1.13.5"
+  },
+  "dependencies": {
+    "await-to-js": "^2.0.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-latest-minimal": "^1.1.2",
+    "cheerio": "^1.0.0-rc.2",
+    "joi": "^13.4.0",
+    "micro": "^9.3.2",
+    "micro-boom": "^1.2.0",
+    "micro-pino": "^1.0.0",
+    "microrouter": "^3.1.3",
+    "nodemon": "^1.17.5",
+    "pending-xhr-puppeteer": "^1.0.13",
+    "pino": "^4.17.3",
+    "puppeteer": "^1.5.0"
+  },
+  "babel": {
+    "plugins": [
+      "transform-class-properties"
+    ],
+    "presets": [
+      "latest-minimal"
+    ]
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 7,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "jest",
+      "babel"
+    ],
+    "extends": [
+      "airbnb",
+      "prettier"
+    ],
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "quotes": 0,
+      "comma-dangle": 0
+    }
+  }
+}
