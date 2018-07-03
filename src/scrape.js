@@ -80,8 +80,7 @@ class Scraper {
 
   async query({ q, waitFor = null, clicks = [] }) {
     const url = setURL(q);
-    const content = await this.get(url, { waitFor, clicks });
-    return getResult(content);
+    return this.get(url, { waitFor, clicks });
   }
 
   async exit() {

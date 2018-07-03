@@ -6,6 +6,10 @@ import microPino from "micro-pino";
 import pino from "pino";
 import { createScraper } from "./scrape";
 
+const appLogger = pino({
+  serializers: pino.stdSerializers
+});
+
 const querySchema = Joi.object({
   q: Joi.string().required(),
   page: Joi.number()
@@ -42,21 +46,17 @@ let chrome;
 createScraper()
   .then(scraper => {
     chrome = scraper;
-    const logger = pino({
-      me: "my-app",
-      serializers: pino.stdSerializers
-    });
-    server(scraper, logger).listen(3000);
-    console.log("start");
+    server(scraper, appLogger).listen(process.env.PORT || 3000);
+    appLogger.info("server started");
   })
   .catch(err => {
     if (err) throw err;
   });
 
 process.on("SIGINT", () => {
-  chrome.exit().then(() => console.log("exit"));
+  chrome.exit().then(() => appLogger.info("chrome exit"));
 });
 
 process.on("SIGTERM", () => {
-  chrome.exit().then(() => console.log("exit"));
+  chrome.exit().then(() => appLogger.info("chrome exit"));
 });
