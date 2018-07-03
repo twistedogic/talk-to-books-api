@@ -5,25 +5,6 @@ import { PendingXHR } from "pending-xhr-puppeteer";
 
 const BASE = "https://books.google.com/talktobooks/query";
 
-export const getHTML = browser => async (
-  url,
-  { waitFor = null, clicks = [] }
-) => {
-  const page = await browser.newPage();
-  const pendingXHR = new PendingXHR(page);
-  await page.goto(url);
-  if (waitFor) {
-    await page.waitForSelector(waitFor);
-  }
-  const waitAndClick = click =>
-    Promise.all([page.waitForSelector(click), page.click(click)]);
-  await Promise.all(clicks.map(waitAndClick));
-  await pendingXHR.waitForAllXhrFinished();
-  const content = await page.content();
-  await page.close();
-  return content;
-};
-
 export const setURL = q => `${BASE}?${qs.stringify({ q })}`;
 
 export const getResult = content => {
@@ -63,11 +44,38 @@ export const getResult = content => {
     .get();
   return cards;
 };
+const waitForLoading = async page => {
+  const content = await page.content();
+  const res = getResult(content);
+  const empty = res.filter(card => !card.author);
+  if (empty.length === 0) {
+    return res;
+  }
+  await page.close();
+  return waitForLoading(page);
+};
+
+export const scrape = browser => async (
+  url,
+  { waitFor = null, clicks = [] }
+) => {
+  const page = await browser.newPage();
+  const pendingXHR = new PendingXHR(page);
+  await page.goto(url);
+  if (waitFor) {
+    await page.waitForSelector(waitFor);
+  }
+  const waitAndClick = click =>
+    Promise.all([page.waitForSelector(click), page.click(click)]);
+  await Promise.all(clicks.map(waitAndClick));
+  await pendingXHR.waitForAllXhrFinished();
+  return waitForLoading(page);
+};
 
 class Scraper {
   constructor(browser) {
     this.browser = browser;
-    this.get = getHTML(browser);
+    this.get = scrape(browser);
   }
 
   async query({ q, waitFor = null, clicks = [] }) {

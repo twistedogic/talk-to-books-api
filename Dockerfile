@@ -23,4 +23,6 @@ EXPOSE 3000
 
 WORKDIR /app
 
-CMD ["dumb-init", "npm", "start"]
+ENTRYPOINT [ "dumb-init", "--" ]
+
+CMD [ "npm", "start" ]
