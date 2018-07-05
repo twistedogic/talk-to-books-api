@@ -1,5 +1,5 @@
 {
-  "name": "talkToBooks",
+  "name": "talk-to-books-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,8 @@
     "test:watch": "jest --watchAll",
     "clean": "prettier --write './src/**/*.js'",
     "lint": "eslint ./src/**/*.js ",
-    "precommit": "npm run clean && npm run lint && npm test"
+    "build": "docker build -t talk-book-api-test . && docker image prune -f && docker run --rm talk-book-api-test npm test",
+    "precommit": "npm run clean && npm run lint && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -24,9 +25,11 @@
     "eslint-plugin-jest": "^21.17.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.10.0",
+    "got": "^8.3.2",
     "husky": "^0.14.3",
     "jest": "^23.2.0",
-    "prettier": "^1.13.5"
+    "prettier": "^1.13.5",
+    "test-listen": "^1.1.0"
   },
   "dependencies": {
     "await-to-js": "^2.0.1",
@@ -36,7 +39,6 @@
     "cheerio": "^1.0.0-rc.2",
     "joi": "^13.4.0",
     "micro": "^9.3.2",
-    "micro-boom": "^1.2.0",
     "micro-pino": "^1.0.0",
     "microrouter": "^3.1.3",
     "nodemon": "^1.17.5",

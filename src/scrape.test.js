@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import to from "await-to-js";
 import puppeteer from "puppeteer";
-import { scrape, setURL, getResult } from "./scrape";
+import { scrape, setURL, getResult, PUPPETEER_OPT } from "./scrape";
 
 const fixture = path.resolve(__dirname, "fixture", "test.html");
 
@@ -32,7 +32,9 @@ describe("getResult", () => {
 describe("scrape", () => {
   let browser;
   beforeAll(async () => {
-    browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+    const [err, res] = await to(puppeteer.launch(PUPPETEER_OPT));
+    if (err) throw err;
+    browser = res;
   });
   afterAll(async () => {
     await browser.close();

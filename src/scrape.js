@@ -5,6 +5,11 @@ import { PendingXHR } from "pending-xhr-puppeteer";
 
 const BASE = "https://books.google.com/talktobooks/query";
 
+export const PUPPETEER_OPT = {
+  args: ["--no-sandbox", "--disable-dev-shm-usage"],
+  executablePath: "google-chrome-unstable"
+};
+
 export const setURL = q => `${BASE}?${qs.stringify({ q })}`;
 
 export const getResult = content => {
@@ -89,6 +94,6 @@ class Scraper {
 }
 
 export const createScraper = async () => {
-  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+  const browser = await puppeteer.launch(PUPPETEER_OPT);
   return new Scraper(browser);
 };
